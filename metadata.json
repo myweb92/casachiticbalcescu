@@ -1,0 +1,6 @@
+{
+  "name": "Casa Chitic Balcescu",
+  "description": "An elegant, modern single-page website for the boutique hotel Casa Chitic Balcescu in Brasov, Romania, blending 1902 historic charm with luxury modern comfort.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
