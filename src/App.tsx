@@ -19,7 +19,7 @@ const ROOMS: Room[] = [
     type: "budget",
     tag: "Best Seller",
     tagColor: "bg-[#A67C52]",
-    size: "15 m²",
+    size: "25 m²",
     capacity: "2 Adults",
     bed: "2 Single Beds",
     images: [
@@ -41,7 +41,7 @@ const ROOMS: Room[] = [
     type: "budget",
     tag: "Family",
     tagColor: "bg-emerald-700",
-    size: "20 m²",
+    size: "25 m²",
     capacity: "3 Adults",
     bed: "1 King, 1 Single",
     images: [
@@ -107,7 +107,7 @@ const ROOMS: Room[] = [
     type: "deluxe",
     tag: "Luxury",
     tagColor: "bg-[#1A1A1A]",
-    size: "18 m²",
+    size: "25 m²",
     capacity: "2 Adults",
     bed: "2 Single Beds",
     images: [
