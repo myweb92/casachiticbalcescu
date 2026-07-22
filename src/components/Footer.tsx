@@ -102,7 +102,7 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin size={15} className="text-[#A67C52] shrink-0 mt-0.5" />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Strada+Nicolae+Bălcescu+13,+Brașov"
+                  href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="leading-normal hover:text-[#A67C52] transition-colors"

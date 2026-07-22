@@ -136,7 +136,7 @@ export default function ReviewsSection() {
       {/* External Review Links */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
         <a 
-          href="https://www.google.com/maps/search/?api=1&query=Casa+Chitic+Bălcescu+13,+Brașov"
+          href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#DED9D2] hover:bg-[#EBE7E0] transition-colors font-sans text-xs font-bold tracking-widest text-[#1A1A1A] uppercase w-full sm:w-auto"

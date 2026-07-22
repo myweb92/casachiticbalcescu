@@ -36,28 +36,6 @@ const ROOMS: Room[] = [
     ]
   },
   {
-    id: "budget-triple",
-    name: "Triple Budget Room",
-    type: "budget",
-    tag: "Family",
-    tagColor: "bg-emerald-700",
-    size: "25 m²",
-    capacity: "3 Adults",
-    bed: "1 King, 1 Single",
-    images: [
-      "https://h-img3.cloudbeds.com/uploads/184869/xt4b1450~~655e0a3c71e6d.jpg",
-      "https://h-img2.cloudbeds.com/uploads/184869/xt4b1494~~655e0a4b00c4e.jpg",
-      "https://h-img2.cloudbeds.com/uploads/184869/dscf1872~~655e0a5893487.jpg"
-    ],
-    description: "This Triple Economy Room is especially designed for three travelers that want to share the same room. This room comes with one large king size bed and a single large size bed.",
-    amenities: [
-      "Free WiFi",
-      "Flat-screen TV",
-      "Air conditioning",
-      "Soundproofing"
-    ]
-  },
-  {
     id: "budget-double",
     name: "Double Budget Room",
     type: "budget",
@@ -137,7 +115,7 @@ const ROOMS: Room[] = [
       "https://h-img1.cloudbeds.com/uploads/184869/xt4b1413~~655e0ab098d80.jpg",
       "https://h-img3.cloudbeds.com/uploads/184869/dscf1845~~655e0ab857cdf.jpg"
     ],
-    description: "Especially designed rooms.",
+    description: "Experience premium comfort in our Deluxe Double Room. Tastefully decorated and spacious, it offers a luxurious stay with an exceptionally comfortable double bed, high-quality linens, and modern amenities designed to help you relax and unwind.",
     amenities: [
       "Free WiFi",
       "Flat-screen TV",
@@ -213,7 +191,7 @@ export default function App() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xs md:text-sm font-sans font-bold tracking-[0.45em] text-[#A67C52] uppercase"
+              className="text-xs md:text-sm font-sans font-bold tracking-[0.45em] text-white drop-shadow-md uppercase"
             >
               Historic Charm • Modern Comfort
             </motion.p>
@@ -292,7 +270,7 @@ export default function App() {
                 <p>
                   Perfected nestled at{' '}
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=Strada+Nicolae+Bălcescu+13,+Brașov"
+                    href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#1A1A1A] font-semibold hover:text-[#A67C52] transition-colors"
@@ -315,7 +293,7 @@ export default function App() {
                   <h4 className="font-serif font-bold text-[#1A1A1A]">Perfect Location</h4>
                   <p className="text-neutral-500 mt-0.5">
                     <a
-                      href="https://www.google.com/maps/search/?api=1&query=Strada+Nicolae+Bălcescu+13,+Brașov"
+                      href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-[#A67C52] transition-colors"
