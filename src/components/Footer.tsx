@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Facebook, Instagram, Send, Check, ShieldAlert } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Send, Check } from 'lucide-react';
 import Logo from './Logo';
 import TermsModal from './TermsModal';
 import PrivacyModal from './PrivacyModal';
@@ -184,11 +184,6 @@ export default function Footer() {
             <p className="text-[10px] text-neutral-500 font-sans">
               System developed by Niran Sudharaka
             </p>
-            {/* Specific Romanian Legal Warning */}
-            <div className="flex items-center justify-center md:justify-start gap-1.5 text-[#A67C52] text-[10px] font-bold font-sans tracking-wide uppercase">
-              <ShieldAlert size={12} className="shrink-0" />
-              <span>Aceasta unitate de cazare nu este autorizata d.p.d.v PSI</span>
-            </div>
           </div>
 
           {/* Terms & Privacy Links */}

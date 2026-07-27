@@ -375,13 +375,17 @@ export default function App() {
           </div>
 
           {/* Rooms Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex flex-wrap justify-center gap-8">
             {filteredRooms.map((room) => (
-              <RoomCard
-                key={room.id}
-                room={room}
-                onBook={(id) => openBookingModal(id)}
-              />
+              <div 
+                key={room.id} 
+                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333333%-1.333333rem)]"
+              >
+                <RoomCard
+                  room={room}
+                  onBook={(id) => openBookingModal(id)}
+                />
+              </div>
             ))}
           </div>
         </div>

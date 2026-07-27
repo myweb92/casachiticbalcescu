@@ -434,9 +434,6 @@ export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '
                     <p className="text-[10px] text-neutral-400">
                       Address: Str. Nicolae Balcescu 13, Brasov, RO
                     </p>
-                    <p className="text-[9px] text-neutral-400 italic">
-                      Aceasta unitate de cazare nu este autorizata d.p.d.v PSI
-                    </p>
                   </div>
                 </div>
 
