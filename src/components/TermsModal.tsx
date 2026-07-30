@@ -20,6 +20,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
           onClick={onClose}
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         />
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -40,18 +41,14 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
 
           {/* Content */}
           <div className="p-6 sm:p-8 overflow-y-auto bg-[#F9F8F6] text-sm text-neutral-700 font-sans leading-relaxed space-y-6">
-            <p className="font-bold">Last updated: 5 November 2025</p>
+            <p className="font-bold">Last updated: 24 JULY 2026</p>
 
             <p>
-              These Terms and Conditions (“Terms”) govern the use of https://casachiticbalcescu.ro/ (the
-              “Website”) and the services provided by CCB HOTELS SRL at Casa Chitic Bălcescu
-              (boutique hotel & restaurant, Str. Nicolae Bălcescu 13, Brașov). Accessing the Website, making
-              a reservation or using our services constitutes full and unconditional acceptance of these Terms.
+              These Terms and Conditions (“Terms”) govern the use of https://casachiticbalcescu.ro/ (the “Website”) and the services provided by CCB HOTELS SRL at Casa Chitic Bălcescu, Str. Nicolae Bălcescu 13, Brașov. Accessing the Website, making a reservation or using our services constitutes full and unconditional acceptance of these Terms.
             </p>
 
             <p>
-              <strong>Operator:</strong> CCB HOTELS SRL, Address: Comuna Cristian, Sat Cristian, DN 73, Brașov County,
-              VAT RO39174576, Trade Registry: J2018000815087 (new format), e-mail:{' '}
+              <strong>Operator:</strong> CCB HOTELS SRL, Address: Comuna Cristian, Sat Cristian, Nicolae Iorga 32, Brașov County, VAT RO39174576, Trade Registry: J2018000815087 (new format), e-mail:{' '}
               <a href="mailto:office@casachiticbalcescu.ro" className="text-[#A67C52] hover:underline">office@casachiticbalcescu.ro</a>, phone: +40 731 002 138.
             </p>
 
@@ -68,22 +65,22 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Scope</h3>
-              <p>These Terms apply to legal relationships regarding: Website use; reservations (Website, phone/e-mail, front desk, OTAs); accommodation/restaurant services; events.</p>
+              <p>These Terms apply to legal relationships regarding: Website use; reservations (Website, phone/e-mail, front desk, OTAs); accommodation services; events.</p>
             </div>
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Website use</h3>
-              <p>The Website is provided “as is”. Display errors or delayed updates may occur; we reserve the right to change content, rates and availability without notice, without affecting already-confirmed reservations. Unlawful use is prohibited (incl. unauthorised access, mass scraping, code injection). Website content is protected by IP laws.</p>
+              <p>The Website is provided “as is”. Display errors or delayed updates may occur; we reserve the right to change content, rates and availability without notice, without affecting already-confirmed reservations. Unlawful use is prohibited (incl. unauthorized access, mass scraping, code injection). Website content is protected by IP laws.</p>
             </div>
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Reservations. Contract formation</h3>
-              <p>Reservations may be made via Website; phone/e-mail; front desk; third-party platforms (OTAs). The contract is concluded upon confirmation (automatic or manual). Some rates may require guarantee (card pre-authorisation/deposit) or full prepayment. The Client must check reservation details (name, stay dates, room type, persons, cancellation). For OTA bookings, the platform’s commercial terms may complement these Terms; in case of discrepancy, the conditions in the stay confirmation prevail.</p>
+              <p>Reservations may be made via Website; phone/e-mail; front desk; third-party platforms (OTAs). The contract is concluded upon confirmation (automatic or manual). Some rates may require guarantee (card pre-authorization/deposit) or full prepayment. The Client must check reservation details (name, stay dates, room type, persons, cancellation). For OTA bookings, the platform’s commercial terms may complement these Terms; in case of discrepancy, the conditions in the stay confirmation prevail.</p>
             </div>
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Rates, taxes & payments</h3>
-              <p>Rates are shown in the indicated currency and include VAT as per law; other specific charges (e.g., local tourist tax) may be payable at the front desk. Accepted payment methods are indicated on the Website/confirmation. Card data are processed by authorised processors in line with PCI DSS; the Operator does not store full card data. In case of non-payment, the Operator may withhold/offset guaranteed amounts and refuse services until settlement.</p>
+              <p>Rates are shown in the indicated currency and include VAT as per law; other specific charges (e.g., local tourist tax) may be payable at the front desk. Accepted payment methods are indicated on the Website/confirmation. Card data are processed by authorized processors in line with PCI DSS; the Operator does not store full card data. In case of non-payment, the Operator may withhold/offset guaranteed amounts and refuse services until settlement.</p>
             </div>
 
             <div>
@@ -103,15 +100,10 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
               <ul className="list-disc pl-5 space-y-2 mt-2">
                 <li><strong>Smoking:</strong> only in designated areas; smoking in rooms may incur cleaning fees.</li>
                 <li><strong>Pets:</strong> subject to the unit’s policy published on the Website/confirmation; restrictions/fees may apply.</li>
-                <li><strong>Damages:</strong> the Client is liable; the Operator may charge the guarantee/pre-authorisation for proven damages.</li>
+                <li><strong>Damages:</strong> the Client is liable; the Operator may charge the guarantee/pre-authorization for proven damages.</li>
                 <li><strong>Lost & found:</strong> items kept for a reasonable period; return at Client’s expense.</li>
                 <li><strong>Parking (if available):</strong> limited spots; may be unsecured/unattended; the Operator is not liable for items left in vehicles.</li>
               </ul>
-            </div>
-
-            <div>
-              <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Restaurant. Allergens</h3>
-              <p>Table reservations are confirmed subject to availability; delays may lead to reallocation. For groups/events, a deposit and preset menu may be required. The Client must inform staff of any allergies before ordering; reasonable efforts are made, but cross-contamination risk cannot be fully excluded in shared kitchen environments.</p>
             </div>
 
             <div>
@@ -121,7 +113,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Guest Wi-Fi – acceptable use</h3>
-              <p>Wi-Fi access may be conditioned by accepting captive-portal terms. Unlawful use is prohibited (copyright violations, malware distribution, unauthorised access). For security/audit, technical metadata (MAC, assigned IP, session time) may be collected per the Privacy Policy.</p>
+              <p>Wi-Fi access may be conditioned by accepting captive-portal terms. Unlawful use is prohibited (copyright violations, malware distribution, unauthorized access). For security/audit, technical metadata (MAC, assigned IP, session time) may be collected per the Privacy Policy.</p>
             </div>
 
             <div>
@@ -136,7 +128,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Liability</h3>
-              <p>We act in good faith to perform obligations. To the extent permitted by law, liability for foreseeable and proven damages is limited to the value of services reserved for the stay/event concerned (excluding bodily injury, wilful misconduct or gross negligence). We are not liable for: (i) interruptions/errors in third-party services (utilities, payments, OTAs); (ii) indirect losses (loss of work, opportunity, profit).</p>
+              <p>We act in good faith to perform obligations. To the extent permitted by law, liability for foreseeable and proven damages is limited to the value of services reserved for the stay/event concerned (excluding bodily injury, willful misconduct or gross negligence). We are not liable for: (i) interruptions/errors in third-party services (utilities, payments, OTAs); (ii) indirect losses (loss of work, opportunity, profit).</p>
             </div>
 
             <div>
@@ -146,7 +138,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
 
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Intellectual property</h3>
-              <p>Website materials (texts, photos, logos, visual elements) are owned by the Operator or partners and protected by law. A limited, non-exclusive, revocable licence is granted for personal, non-commercial access. Any reproduction/distribution requires written consent.</p>
+              <p>Website materials (texts, photos, logos, visual elements) are owned by the Operator or partners and protected by law. A limited, non-exclusive, revocable license is granted for personal, non-commercial access. Any reproduction/distribution requires written consent.</p>
             </div>
 
             <div>
@@ -177,7 +169,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
             <div>
               <h3 className="font-serif text-lg text-[#1A1A1A] mb-2 font-bold">Contact</h3>
               <p>
-                CCB HOTELS SRL • Comuna Cristian, Sat Cristian, DN 73, Brașov County<br />
+                CCB HOTELS SRL • Comuna Cristian, Sat Cristian, Nicolae Iorga 32, Brașov County<br />
                 E-mail: <a href="mailto:office@casachiticbalcescu.ro" className="text-[#A67C52] hover:underline">office@casachiticbalcescu.ro</a> | Tel.: +40 731 002 138
               </p>
             </div>
