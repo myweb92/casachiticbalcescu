@@ -162,12 +162,21 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           </div>
 
           {/* Mobile Menu Trigger & Book Button */}
-          <div className="flex items-center gap-3 lg:hidden">
+          <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
+            <a
+              href="tel:+40731002138"
+              className={`flex items-center gap-1 text-[9px] font-sans font-bold tracking-wider transition-colors duration-300 ${
+                isScrolled ? 'text-[#1A1A1A] hover:text-[#A67C52]' : 'text-neutral-200 hover:text-white'
+              }`}
+            >
+              <Phone size={10} className="text-[#A67C52]" />
+              <span className="whitespace-nowrap">+40 731 002 138</span>
+            </a>
             <a
               href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#A67C52] hover:bg-[#8E6A46] text-white text-[9px] font-sans font-bold uppercase tracking-widest px-4 py-2 transition-colors cursor-pointer inline-block"
+              className="bg-[#A67C52] hover:bg-[#8E6A46] text-white text-[9px] font-sans font-bold uppercase tracking-widest px-2.5 sm:px-4 py-2 transition-colors cursor-pointer inline-block whitespace-nowrap"
               id="navbar-mobile-booking-btn"
             >
               Book Now
