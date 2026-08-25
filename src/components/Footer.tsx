@@ -3,13 +3,29 @@ import { Mail, Phone, MapPin, Facebook, Instagram, Send, Check } from 'lucide-re
 import Logo from './Logo';
 import TermsModal from './TermsModal';
 import PrivacyModal from './PrivacyModal';
+import EditableText from './EditableText';
+import { useCMS } from '../context/CMSContext';
 
 export default function Footer() {
+  const { setIsAdminModalOpen } = useCMS();
   const [emailInquiry, setEmailInquiry] = useState('');
   const [messageText, setMessageText] = useState('');
   const [isSent, setIsSent] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+
+  // Hidden triple-click trigger for Admin Login Modal
+  const [clickCount, setClickCount] = useState(0);
+  const handleCopyrightClick = () => {
+    const nextCount = clickCount + 1;
+    if (nextCount >= 3) {
+      setClickCount(0);
+      setIsAdminModalOpen(true);
+    } else {
+      setClickCount(nextCount);
+      setTimeout(() => setClickCount(0), 2000);
+    }
+  };
 
   const handleSubmitInquiry = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,15 +61,19 @@ export default function Footer() {
               <Logo showText={false} variant="gold" className="w-10 h-11" />
               <div className="flex flex-col text-left">
                 <span className="font-serif font-bold text-base text-white tracking-widest uppercase">
-                  Casa Chitic
+                  <EditableText contentKey="footer.brandName" defaultText="Casa Chitic" />
                 </span>
                 <span className="text-[8px] font-sans font-bold tracking-[0.3em] uppercase text-[#A67C52] -mt-0.5">
-                  Bălcescu • Brașov
+                  <EditableText contentKey="footer.brandTagline" defaultText="Bălcescu • Brașov" />
                 </span>
               </div>
             </div>
             <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-              Experience the timeless elegance of Brașov in our historic 1902 boutique property. Custom-crafted solid wood finishes, modern amenities, and welcoming family hospitality await your stay.
+              <EditableText
+                contentKey="footer.aboutText"
+                defaultText="Experience the timeless elegance of Brașov in our historic 1902 boutique property. Custom-crafted solid wood finishes, modern amenities, and welcoming family hospitality await your stay."
+                multiline
+              />
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
@@ -101,27 +121,25 @@ export default function Footer() {
             <ul className="space-y-3.5 text-xs font-sans">
               <li className="flex items-start gap-2.5">
                 <MapPin size={15} className="text-[#A67C52] shrink-0 mt-0.5" />
-                <a
-                  href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="leading-normal hover:text-[#A67C52] transition-colors"
-                >
-                  Str. Nicolae Bălcescu 13,<br />
-                  Brașov, 500019, Romania
-                </a>
+                <EditableText
+                  contentKey="footer.address"
+                  defaultText="Str. Nicolae Bălcescu 13, Brașov, 500019, Romania"
+                  multiline
+                />
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail size={15} className="text-[#A67C52] shrink-0" />
-                <a href="mailto:office@casachiticbalcescu.ro" className="hover:text-[#A67C52] transition-colors">
-                  office@casachiticbalcescu.ro
-                </a>
+                <EditableText
+                  contentKey="footer.email"
+                  defaultText="office@casachiticbalcescu.ro"
+                />
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone size={15} className="text-[#A67C52] shrink-0" />
-                <a href="tel:+40731002138" className="hover:text-[#A67C52] transition-colors">
-                  +40 731 002 138
-                </a>
+                <EditableText
+                  contentKey="footer.phone"
+                  defaultText="+40 731 002 138"
+                />
               </li>
             </ul>
           </div>
@@ -178,7 +196,11 @@ export default function Footer() {
         {/* Footer bottom section */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center md:text-left">
-            <p className="text-[10px] text-neutral-500 font-sans">
+            <p
+              onClick={handleCopyrightClick}
+              className="text-[10px] text-neutral-500 font-sans cursor-pointer select-none hover:text-neutral-400 transition-colors"
+              title="Click 3 times to access Admin Mode"
+            >
               Copyright &copy; 2026 Casa Chitic Bălcescu. All rights reserved.
             </p>
             <p className="text-[10px] text-neutral-500 font-sans">
@@ -207,3 +229,4 @@ export default function Footer() {
     </footer>
   );
 }
+

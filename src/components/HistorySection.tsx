@@ -1,6 +1,8 @@
 import React from 'react';
 import Logo from './Logo';
 import { Landmark, Compass, Award, Hammer } from 'lucide-react';
+import EditableText from './EditableText';
+import EditableImage from './EditableImage';
 
 export default function HistorySection() {
   return (
@@ -10,29 +12,32 @@ export default function HistorySection() {
         <div className="space-y-2">
           
           <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] font-medium tracking-tight">
-            A Bit of History About Us
+            <EditableText contentKey="history.title" defaultText="A Bit of History About Us" />
           </h2>
           <div className="w-16 h-[1px] bg-[#A67C52] mt-3" />
         </div>
 
         <div className="space-y-4 text-sm text-neutral-600 font-sans leading-relaxed text-justify">
           <p>
-            Perfectly nestled at{' '}
-            <a
-              href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#1A1A1A] font-semibold hover:text-[#A67C52] transition-colors"
-            >
-              Strada Nicolae Bălcescu 13
-            </a>
-            , Casa Chitic Bălcescu invites you to experience a unique synthesis of Romanian history and contemporary luxury. Built in <strong className="text-[#A67C52] font-semibold font-serif">1902</strong>, this remarkable architectural building has been completely restored with extreme care, offering you an intimate home in the historic core of Brașov.
+            <EditableText
+              contentKey="history.paragraph1"
+              defaultText="Perfectly nestled at Strada Nicolae Bălcescu 13, Casa Chitic Bălcescu invites you to experience a unique synthesis of Romanian history and contemporary luxury. Built in 1902, this remarkable architectural building has been completely restored with extreme care, offering you an intimate home in the historic core of Brașov."
+              multiline
+            />
           </p>
           <p>
-            Upon crossing our threshold, you will discover majestic, vaulted ceilings and bespoke, noble furniture hand-carved entirely from <strong className="text-[#1A1A1A] font-semibold">solid wood</strong>.
+            <EditableText
+              contentKey="history.paragraph2"
+              defaultText="Upon crossing our threshold, you will discover majestic, vaulted ceilings and bespoke, noble furniture hand-carved entirely from solid wood."
+              multiline
+            />
           </p>
           <p>
-            Whether you are visiting Brașov to explore the spectacular gothic peaks of the Black Church (a 3-minute stroll), relax near the vibrant terrace cafes of Council Square, or hike the lush forested crown of Mount Tâmpa, Casa Chitic Balcescu stands as your ultimate, peaceful retreat.
+            <EditableText
+              contentKey="history.paragraph3"
+              defaultText="Whether you are visiting Brașov to explore the spectacular gothic peaks of the Black Church (a 3-minute stroll), relax near the vibrant terrace cafes of Council Square, or hike the lush forested crown of Mount Tâmpa, Casa Chitic Balcescu stands as your ultimate, peaceful retreat."
+              multiline
+            />
           </p>
         </div>
 
@@ -43,8 +48,12 @@ export default function HistorySection() {
               <Landmark size={18} />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">Built 1902</h4>
-              <p className="text-[10px] text-neutral-500">Architectural Monument</p>
+              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">
+                <EditableText contentKey="history.fact1Title" defaultText="Built 1902" />
+              </h4>
+              <p className="text-[10px] text-neutral-500">
+                <EditableText contentKey="history.fact1Sub" defaultText="Architectural Monument" />
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 bg-white border border-[#DED9D2]">
@@ -52,8 +61,12 @@ export default function HistorySection() {
               <Compass size={18} />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">Old Town</h4>
-              <p className="text-[10px] text-neutral-500">Strada Nicolae Bălcescu</p>
+              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">
+                <EditableText contentKey="history.fact2Title" defaultText="Old Town" />
+              </h4>
+              <p className="text-[10px] text-neutral-500">
+                <EditableText contentKey="history.fact2Sub" defaultText="Strada Nicolae Bălcescu" />
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 bg-white border border-[#DED9D2]">
@@ -61,8 +74,12 @@ export default function HistorySection() {
               <Hammer size={18} />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">Renovated 2017</h4>
-              <p className="text-[10px] text-neutral-500">Refurbished and fully renovated in 2017</p>
+              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">
+                <EditableText contentKey="history.fact3Title" defaultText="Renovated 2017" />
+              </h4>
+              <p className="text-[10px] text-neutral-500">
+                <EditableText contentKey="history.fact3Sub" defaultText="Refurbished & fully renovated" />
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 bg-white border border-[#DED9D2]">
@@ -70,8 +87,12 @@ export default function HistorySection() {
               <Award size={18} />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">Family Run</h4>
-              <p className="text-[10px] text-neutral-500">Craftsmanship Focus</p>
+              <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">
+                <EditableText contentKey="history.fact4Title" defaultText="Family Run" />
+              </h4>
+              <p className="text-[10px] text-neutral-500">
+                <EditableText contentKey="history.fact4Sub" defaultText="Craftsmanship Focus" />
+              </p>
             </div>
           </div>
         </div>
@@ -80,10 +101,12 @@ export default function HistorySection() {
       {/* Right Column: Image */}
       <div className="lg:col-span-5 flex flex-col items-center justify-center relative p-8">
         <div className="relative max-w-sm w-full group overflow-hidden shadow-lg rounded-sm">
-          <img
-            src="/logo.jpeg"
+          <EditableImage
+            contentKey="history.image"
+            defaultSrc="/logo.jpeg"
             alt="Casa Chitic Balcescu Logo"
             className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+            containerClassName="w-full h-full"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -91,3 +114,4 @@ export default function HistorySection() {
     </div>
   );
 }
+

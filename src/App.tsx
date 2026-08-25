@@ -10,6 +10,12 @@ import ReviewsSection from './components/ReviewsSection';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
 import Logo from './components/Logo';
+import LiveAdminToolbar from './components/LiveAdminToolbar';
+import AdminLoginModal from './components/AdminLoginModal';
+import AdminDrawer from './components/AdminDrawer';
+import EditableText from './components/EditableText';
+import EditableImage from './components/EditableImage';
+
 
 // High-quality, curated room assets
 const ROOMS: Room[] = [
@@ -152,6 +158,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F5F2ED] text-[#1A1A1A] selection:bg-[#A67C52]/30 selection:text-[#1A1A1A]">
+      {/* Admin Floating Live Edit Controls */}
+      <LiveAdminToolbar />
+      <AdminLoginModal />
+      <AdminDrawer />
+
       {/* Navigation */}
       <Navbar onOpenBooking={() => openBookingModal('')} />
 
@@ -162,14 +173,16 @@ export default function App() {
       >
         {/* Background Parallax-like Image of Boutique Exterior */}
         <div className="absolute inset-0 z-0">
-           <img
-            src="/header.jpeg"
+          <EditableImage
+            contentKey="hero.image"
+            defaultSrc="/header.jpeg"
             alt="Casa Chitic Balcescu boutique hotel exterior"
             className="w-full h-full object-cover scale-105 select-none"
+            containerClassName="w-full h-full"
             referrerPolicy="no-referrer"
           />
           {/* Rich Dark Gradients for typography legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-900/20 to-neutral-950/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-900/20 to-neutral-950/20 pointer-events-none" />
         </div>
 
         {/* Hero Content */}
@@ -193,7 +206,7 @@ export default function App() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-xs md:text-sm font-sans font-bold tracking-[0.45em] text-white drop-shadow-md uppercase"
             >
-              Historic Charm • Modern Comfort
+              <EditableText contentKey="hero.slogan" defaultText="Historic Charm • Modern Comfort" />
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -201,7 +214,7 @@ export default function App() {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium leading-tight tracking-tight text-white"
             >
-              You Stay in the Heart of Brașov.
+              <EditableText contentKey="hero.title" defaultText="You Stay in the Heart of Brașov." multiline />
             </motion.h2>
           </div>
 
@@ -219,14 +232,14 @@ export default function App() {
               className="w-full sm:w-auto bg-[#A67C52] hover:bg-[#8E6A46] text-white font-sans font-bold text-xs tracking-[0.2em] uppercase px-8 py-4 rounded-none transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer inline-block text-center"
               id="hero-book-now-btn"
             >
-              Book Your Stay
+              <EditableText contentKey="hero.bookBtnText" defaultText="Book Your Stay" />
             </a>
             <button
               onClick={() => handleScrollTo('welcome')}
               className="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/20 text-white font-sans font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4 rounded-none transition-all cursor-pointer"
               id="hero-explore-btn"
             >
-              Explore Hotel
+              <EditableText contentKey="hero.exploreBtnText" defaultText="Explore Hotel" />
             </button>
           </motion.div>
 
@@ -258,39 +271,44 @@ export default function App() {
             <div className="lg:col-span-6 space-y-6">
               <div className="space-y-2">
                 <span className="text-[10px] font-sans font-bold tracking-[0.35em] text-[#A67C52] uppercase block">
-                  Welcome to Casa Chitic
+                  <EditableText contentKey="welcome.subtitle" defaultText="Welcome to Casa Chitic" />
                 </span>
                 <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] font-medium tracking-tight">
-                  Timeless Elegance in the Citadel Walls
+                  <EditableText contentKey="welcome.title" defaultText="Timeless Elegance in the Citadel Walls" />
                 </h2>
                 <div className="w-16 h-[1px] bg-[#A67C52] mt-3" />
               </div>
 
               <div className="space-y-4 text-sm text-neutral-600 font-sans leading-relaxed text-justify">
                 <p>
-                  Perfected nestled at{' '}
-                  <a
-                    href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#1A1A1A] font-semibold hover:text-[#A67C52] transition-colors"
-                  >
-                    Strada Nicolae Bălcescu 13
-                  </a>
-                  , Casa Chitic Bălcescu invites you to experience a unique synthesis of Romanian history and contemporary luxury. Built in <strong className="text-[#A67C52] font-semibold font-serif">1902</strong>, this remarkable architectural monument has been completely restored with extreme care, offering you an intimate home in the historic core of Brașov.
+                  <EditableText
+                    contentKey="welcome.paragraph1"
+                    defaultText="Perfected nestled at Strada Nicolae Bălcescu 13, Casa Chitic Bălcescu invites you to experience a unique synthesis of Romanian history and contemporary luxury. Built in 1902, this remarkable architectural monument has been completely restored with extreme care, offering you an intimate home in the historic core of Brașov."
+                    multiline
+                  />
                 </p>
                 <p>
-                  Upon crossing our threshold, you will discover majestic, vaulted ceilings and bespoke, noble furniture hand-carved entirely from <strong className="text-[#1A1A1A] font-semibold">solid wood</strong>. This organic warmth is beautifully complemented by premium mattresses, luxurious linens, and pristine modern amenities that elevate your comfort.
+                  <EditableText
+                    contentKey="welcome.paragraph2"
+                    defaultText="Upon crossing our threshold, you will discover majestic, vaulted ceilings and bespoke, noble furniture hand-carved entirely from solid wood. This organic warmth is beautifully complemented by premium mattresses, luxurious linens, and pristine modern amenities that elevate your comfort."
+                    multiline
+                  />
                 </p>
                 <p>
-                  Whether you are visiting Brașov to explore the spectacular gothic peaks of the <strong className="text-[#1A1A1A] font-semibold">Black Church</strong> (a 3-minute stroll), relax near the vibrant terrace cafes of <strong className="text-[#1A1A1A] font-semibold">Council Square</strong>, or hike the lush forested crown of Mount Tâmpa, Casa Chitic stands as your ultimate, peaceful retreat.
+                  <EditableText
+                    contentKey="welcome.paragraph3"
+                    defaultText="Whether you are visiting Brașov to explore the spectacular gothic peaks of the Black Church (a 3-minute stroll), relax near the vibrant terrace cafes of Council Square, or hike the lush forested crown of Mount Tâmpa, Casa Chitic stands as your ultimate, peaceful retreat."
+                    multiline
+                  />
                 </p>
               </div>
 
               {/* Inner quick facts row */}
               <div className="grid grid-cols-1 gap-4 pt-4 border-t border-[#DED9D2] text-xs font-sans">
                 <div>
-                  <h4 className="font-serif font-bold text-[#1A1A1A]">Perfect Location</h4>
+                  <h4 className="font-serif font-bold text-[#1A1A1A]">
+                    <EditableText contentKey="welcome.factTitle" defaultText="Perfect Location" />
+                  </h4>
                   <p className="text-neutral-500 mt-0.5">
                     <a
                       href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
@@ -298,7 +316,7 @@ export default function App() {
                       rel="noopener noreferrer"
                       className="hover:text-[#A67C52] transition-colors"
                     >
-                      Strada Nicolae Bălcescu 13
+                      <EditableText contentKey="welcome.factDesc" defaultText="Strada Nicolae Bălcescu 13" />
                     </a>
                   </p>
                 </div>
@@ -312,10 +330,12 @@ export default function App() {
               <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b border-r border-[#A67C52]" />
               
               <div className="relative rounded-none overflow-hidden aspect-4/3 bg-neutral-100 border border-[#DED9D2] shadow-sm">
-                <img
-                  src="/galary.jpg"
+                <EditableImage
+                  contentKey="welcome.image"
+                  defaultSrc="/galary.jpg"
                   alt="Casa Chitic Balcescu"
                   className="w-full h-full object-cover hover:scale-103 transition-transform duration-500"
+                  containerClassName="w-full h-full"
                   referrerPolicy="no-referrer"
                 />
               </div>
