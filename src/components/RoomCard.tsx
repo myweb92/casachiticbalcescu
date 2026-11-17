@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Bed, Users, Maximize, ChevronDown, ChevronUp, Check, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Room } from '../types';
+import EditableText from './EditableText';
+import EditableImage from './EditableImage';
+import { useCMS } from '../context/CMSContext';
 
 interface RoomCardProps {
   key?: string;
@@ -10,16 +13,19 @@ interface RoomCardProps {
 }
 
 export default function RoomCard({ room, onBook }: RoomCardProps) {
+  const { isLiveEditMode } = useCMS();
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const nextImage = () => {
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (room.images && room.images.length > 0) {
       setCurrentImageIndex((prev) => (prev + 1) % room.images.length);
     }
   };
 
-  const prevImage = () => {
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (room.images && room.images.length > 0) {
       setCurrentImageIndex((prev) => (prev - 1 + room.images.length) % room.images.length);
     }
@@ -33,33 +39,52 @@ export default function RoomCard({ room, onBook }: RoomCardProps) {
       {/* Room Image with Tag */}
       <div className="relative aspect-video sm:aspect-4/3 overflow-hidden bg-[#EBE7E0] shrink-0 group/slider">
         {room.images && room.images.length > 0 && (
-          <img
-            src={room.images[currentImageIndex]}
+          <EditableImage
+            contentKey={`room.${room.id}.image.${currentImageIndex}`}
+            defaultSrc={room.images[currentImageIndex]}
             alt={room.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            containerClassName="w-full h-full"
             referrerPolicy="no-referrer"
+            triggerLabel={`Edit Photo ${currentImageIndex + 1}/${room.images.length}`}
           />
         )}
-        
+
         {room.images && room.images.length > 1 && (
           <>
             <button
+              type="button"
               onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 rounded-full opacity-0 group-hover/slider:opacity-100 transition-opacity cursor-pointer"
+              className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-black/75 text-white p-1.5 rounded-full transition-opacity cursor-pointer ${
+                isLiveEditMode ? 'opacity-100' : 'opacity-0 group-hover/slider:opacity-100'
+              }`}
+              title="Previous room photo"
             >
               <ChevronLeft size={16} />
             </button>
             <button
+              type="button"
               onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 rounded-full opacity-0 group-hover/slider:opacity-100 transition-opacity cursor-pointer"
+              className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-black/50 hover:bg-black/75 text-white p-1.5 rounded-full transition-opacity cursor-pointer ${
+                isLiveEditMode ? 'opacity-100' : 'opacity-0 group-hover/slider:opacity-100'
+              }`}
+              title="Next room photo"
             >
               <ChevronRight size={16} />
             </button>
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex gap-1.5">
               {room.images.map((_, idx) => (
-                <div
+                <button
+                  type="button"
                   key={idx}
-                  className={`w-1.5 h-1.5 rounded-full transition-colors ${idx === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImageIndex(idx);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-colors cursor-pointer ${
+                    idx === currentImageIndex ? 'bg-white' : 'bg-white/50 hover:bg-white/80'
+                  }`}
+                  aria-label={`Photo ${idx + 1}`}
                 />
               ))}
             </div>
@@ -71,13 +96,13 @@ export default function RoomCard({ room, onBook }: RoomCardProps) {
 
         {/* Tag Badge */}
         <span
-          className={`absolute top-3 left-3 text-[8px] font-sans font-bold tracking-widest uppercase px-2 py-0.5 text-white ${
+          className={`absolute top-3 left-3 z-30 text-[8px] font-sans font-bold tracking-widest uppercase px-2 py-0.5 text-white ${
             room.type === 'deluxe'
               ? 'bg-[#5A5A40]' // Deluxe
               : 'bg-[#A67C52]' // Best Seller
           }`}
         >
-          {room.tag}
+          <EditableText contentKey={`room.${room.id}.tag`} defaultText={room.tag} />
         </span>
       </div>
 
@@ -87,32 +112,45 @@ export default function RoomCard({ room, onBook }: RoomCardProps) {
           {/* Room Title */}
           <div>
             <h3 className="font-serif text-lg md:text-xl font-medium text-[#1A1A1A] group-hover:text-[#A67C52] transition-colors leading-tight">
-              {room.name}
+              <EditableText contentKey={`room.${room.id}.name`} defaultText={room.name} />
             </h3>
             <p className="text-[10px] text-[#A67C52] font-sans tracking-widest uppercase mt-0.5 font-semibold">
-              {room.type === 'deluxe' ? 'Deluxe Collection' : 'Economy Collection'}
+              <EditableText
+                contentKey={`room.${room.id}.collection`}
+                defaultText={room.type === 'deluxe' ? 'Deluxe Collection' : 'Economy Collection'}
+              />
             </p>
           </div>
 
           {/* Quick Specifications Row */}
           <div className="grid grid-cols-3 gap-2 py-2 border-y border-[#DED9D2] font-sans text-xs text-[#1A1A1A]">
             <div className="flex items-center gap-1.5">
-              <Maximize size={14} className="text-[#A67C52]" />
-              <span className="text-[11px]">{room.size}</span>
+              <Maximize size={14} className="text-[#A67C52] shrink-0" />
+              <span className="text-[11px]">
+                <EditableText contentKey={`room.${room.id}.size`} defaultText={room.size} />
+              </span>
             </div>
             <div className="flex items-center gap-1.5 justify-center border-x border-[#DED9D2]">
-              <Users size={14} className="text-[#A67C52]" />
-              <span className="text-[11px]">{room.capacity}</span>
+              <Users size={14} className="text-[#A67C52] shrink-0" />
+              <span className="text-[11px]">
+                <EditableText contentKey={`room.${room.id}.capacity`} defaultText={room.capacity} />
+              </span>
             </div>
             <div className="flex items-center gap-1.5 justify-end">
-              <Bed size={14} className="text-[#A67C52]" />
-              <span className="truncate text-[11px]" title={room.bed}>{room.bed}</span>
+              <Bed size={14} className="text-[#A67C52] shrink-0" />
+              <span className="truncate text-[11px]" title={room.bed}>
+                <EditableText contentKey={`room.${room.id}.bed`} defaultText={room.bed} />
+              </span>
             </div>
           </div>
 
           {/* Short Description */}
           <p className="text-xs text-neutral-600 font-sans leading-relaxed">
-            {room.description}
+            <EditableText
+              contentKey={`room.${room.id}.description`}
+              defaultText={room.description}
+              multiline
+            />
           </p>
         </div>
 
@@ -125,9 +163,21 @@ export default function RoomCard({ room, onBook }: RoomCardProps) {
               className="border border-[#DED9D2] hover:bg-[#EBE7E0] text-[#1A1A1A] font-sans font-bold text-[10px] tracking-widest uppercase py-2.5 transition-all flex items-center justify-center gap-1 cursor-pointer"
               id={`room-details-btn-${room.id}`}
             >
-              Specs {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              <EditableText contentKey="rooms.specsBtnText" defaultText="Specs" />{' '}
+              {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
             </button>
-            <a href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron" target="_blank" rel="noopener noreferrer" className="bg-[#A67C52] hover:bg-[#8E6A46] text-white font-sans font-bold text-[10px] tracking-widest uppercase py-2.5 transition-all cursor-pointer inline-flex items-center justify-center" id={`room-book-btn-${room.id}`}>Book Stay</a>
+            <a
+              href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
+              className="bg-[#A67C52] hover:bg-[#8E6A46] text-white font-sans font-bold text-[10px] tracking-widest uppercase py-2.5 transition-all cursor-pointer inline-flex items-center justify-center"
+              id={`room-book-btn-${room.id}`}
+            >
+              <EditableText contentKey="rooms.bookBtnText" defaultText="Book Stay" />
+            </a>
           </div>
 
           {/* Expanded Amenities list */}
@@ -141,13 +191,19 @@ export default function RoomCard({ room, onBook }: RoomCardProps) {
                 className="overflow-hidden bg-[#EBE7E0]/50 p-3 border border-[#DED9D2]"
               >
                 <h4 className="text-[9px] font-sans font-bold text-[#1A1A1A] uppercase tracking-widest mb-2 flex items-center gap-1">
-                  <ShieldCheck size={11} className="text-[#A67C52]" /> Room Inclusions:
+                  <ShieldCheck size={11} className="text-[#A67C52]" />{' '}
+                  <EditableText contentKey="rooms.inclusionsTitle" defaultText="Room Inclusions:" />
                 </h4>
                 <ul className="grid grid-cols-2 gap-1.5 text-[10px] text-neutral-700 font-sans">
                   {room.amenities.map((amenity, idx) => (
                     <li key={idx} className="flex items-center gap-1.5">
                       <Check size={10} className="text-[#A67C52] shrink-0" />
-                      <span className="truncate">{amenity}</span>
+                      <span className="truncate">
+                        <EditableText
+                          contentKey={`room.${room.id}.amenity.${idx}`}
+                          defaultText={amenity}
+                        />
+                      </span>
                     </li>
                   ))}
                 </ul>

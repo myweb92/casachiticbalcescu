@@ -1,5 +1,6 @@
 import React from 'react';
-import { Car, Sparkles, Users, Coffee, Languages, Wifi, Calendar, Check } from 'lucide-react';
+import { Car, Sparkles, Users, Coffee, Languages, Wifi } from 'lucide-react';
+import EditableText from './EditableText';
 
 interface ExperienceItem {
   icon: React.ComponentType<{ className?: string; size?: number }>;
@@ -75,7 +76,7 @@ export default function ExperienceGrid() {
                   <span
                     className={`text-[8px] font-sans font-bold tracking-widest uppercase px-2.5 py-0.5 border border-[#DED9D2] ${exp.badgeColor}`}
                   >
-                    {exp.badge}
+                    <EditableText contentKey={`experience.${idx}.badge`} defaultText={exp.badge} />
                   </span>
                 )}
               </div>
@@ -83,10 +84,14 @@ export default function ExperienceGrid() {
               {/* Title & Desc */}
               <div className="space-y-2">
                 <h4 className="font-serif text-base md:text-lg font-medium text-[#1A1A1A]">
-                  {exp.title}
+                  <EditableText contentKey={`experience.${idx}.title`} defaultText={exp.title} />
                 </h4>
                 <p className="text-xs text-neutral-600 font-sans leading-relaxed">
-                  {exp.description}
+                  <EditableText
+                    contentKey={`experience.${idx}.description`}
+                    defaultText={exp.description}
+                    multiline
+                  />
                 </p>
               </div>
             </div>

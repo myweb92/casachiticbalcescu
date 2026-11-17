@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -25,6 +25,7 @@ export default function AdminDrawer() {
     setIsAdminDrawerOpen,
     content,
     updateContent,
+    resetContentKey,
     resetContent,
     changePassword,
   } = useCMS();
@@ -51,6 +52,14 @@ export default function AdminDrawer() {
   const [termsSuccess, setTermsSuccess] = useState(false);
   const [privacyText, setPrivacyText] = useState(content['privacy.custom_text'] || DEFAULT_PRIVACY_EDIT);
   const [privacySuccess, setPrivacySuccess] = useState(false);
+
+  useEffect(() => {
+    setTermsText(content['terms.custom_text'] || DEFAULT_TERMS_EDIT);
+  }, [content['terms.custom_text']]);
+
+  useEffect(() => {
+    setPrivacyText(content['privacy.custom_text'] || DEFAULT_PRIVACY_EDIT);
+  }, [content['privacy.custom_text']]);
 
   if (!isAdminDrawerOpen) return null;
 
@@ -252,15 +261,23 @@ export default function AdminDrawer() {
                 ) : (
                   filteredEntries.map(([key, val]) => (
                     <div key={key} className="p-3.5 bg-white border border-[#DED9D2] rounded shadow-sm space-y-2">
-                      <div className="flex justify-between items-center text-[10px] font-bold text-[#A67C52] uppercase tracking-wider">
-                        <span className="truncate max-w-[320px] font-mono">{key}</span>
+                      <div className="flex justify-between items-center gap-2 text-[10px] font-bold text-[#A67C52] uppercase tracking-wider">
+                        <span className="truncate max-w-[280px] font-mono">{key}</span>
                         {editingKey !== key && (
-                          <button
-                            onClick={() => handleStartEdit(key, val)}
-                            className="text-neutral-600 hover:text-[#A67C52] font-semibold underline cursor-pointer"
-                          >
-                            Edit Field
-                          </button>
+                          <div className="flex items-center gap-3 shrink-0">
+                            <button
+                              onClick={() => handleStartEdit(key, val)}
+                              className="text-neutral-600 hover:text-[#A67C52] font-semibold underline cursor-pointer"
+                            >
+                              Edit Field
+                            </button>
+                            <button
+                              onClick={() => resetContentKey(key)}
+                              className="text-red-500 hover:text-red-700 font-semibold underline cursor-pointer"
+                            >
+                              Reset
+                            </button>
+                          </div>
                         )}
                       </div>
 
@@ -286,9 +303,20 @@ export default function AdminDrawer() {
                             </button>
                           </div>
                         </div>
+                      ) : val.startsWith('data:image') || key.includes('.image') || key === 'brand.logo' ? (
+                        <div className="flex items-center gap-3 bg-neutral-50 p-2 rounded border border-neutral-100">
+                          <img
+                            src={val}
+                            alt={key}
+                            className="w-16 h-12 object-cover rounded border border-neutral-200 shrink-0 bg-neutral-200"
+                          />
+                          <p className="text-[11px] text-neutral-600 font-mono truncate">
+                            {val.startsWith('data:image') ? '[Uploaded Custom Image]' : val}
+                          </p>
+                        </div>
                       ) : (
                         <p className="text-xs text-neutral-700 font-sans break-words bg-neutral-50 p-2.5 rounded border border-neutral-100 max-h-24 overflow-y-auto">
-                          {val.startsWith('data:image') ? '[Uploaded Base64 Image]' : val}
+                          {val}
                         </p>
                       )}
                     </div>

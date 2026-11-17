@@ -15,6 +15,7 @@ import AdminLoginModal from './components/AdminLoginModal';
 import AdminDrawer from './components/AdminDrawer';
 import EditableText from './components/EditableText';
 import EditableImage from './components/EditableImage';
+import { useCMS } from './context/CMSContext';
 
 
 // High-quality, curated room assets
@@ -132,6 +133,7 @@ const ROOMS: Room[] = [
 ];
 
 export default function App() {
+  const { isLiveEditMode } = useCMS();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState('');
   const [roomFilter, setRoomFilter] = useState<'all' | 'deluxe' | 'budget'>('all');
@@ -180,26 +182,29 @@ export default function App() {
             className="w-full h-full object-cover scale-105 select-none"
             containerClassName="w-full h-full"
             referrerPolicy="no-referrer"
+            alwaysShowTrigger={true}
+            triggerLabel="Change Hero Image"
+            triggerPositionClass="bottom-6 right-6 z-30"
           />
           {/* Rich Dark Gradients for typography legibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-900/20 to-neutral-950/20 pointer-events-none" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8 flex flex-col items-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8 flex flex-col items-center pointer-events-none">
           {/* Logo Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
-            className="p-6 bg-black/40 backdrop-blur-sm border border-white/10 max-w-xs"
+            className="p-6 bg-black/40 backdrop-blur-sm border border-white/10 max-w-xs pointer-events-auto"
             id="hero-logo-container"
           >
             <Logo showText={true} variant="white" className="w-24 h-26 md:w-28 md:h-30" />
           </motion.div>
 
           {/* Slogan & Headlines */}
-          <div className="space-y-4 max-w-3xl">
+          <div className="space-y-4 max-w-3xl pointer-events-auto">
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -223,19 +228,24 @@ export default function App() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center gap-4 pt-4"
+            className="flex flex-col sm:flex-row items-center gap-4 pt-4 pointer-events-auto"
           >
             <a
               href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
               className="w-full sm:w-auto bg-[#A67C52] hover:bg-[#8E6A46] text-white font-sans font-bold text-xs tracking-[0.2em] uppercase px-8 py-4 rounded-none transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer inline-block text-center"
               id="hero-book-now-btn"
             >
               <EditableText contentKey="hero.bookBtnText" defaultText="Book Your Stay" />
             </a>
             <button
-              onClick={() => handleScrollTo('welcome')}
+              onClick={() => {
+                if (!isLiveEditMode) handleScrollTo('welcome');
+              }}
               className="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/20 text-white font-sans font-semibold text-xs tracking-[0.2em] uppercase px-8 py-4 rounded-none transition-all cursor-pointer"
               id="hero-explore-btn"
             >
@@ -245,14 +255,18 @@ export default function App() {
 
           {/* Scroll Down Indicator */}
           <motion.button
-            onClick={() => handleScrollTo('welcome')}
+            onClick={() => {
+              if (!isLiveEditMode) handleScrollTo('welcome');
+            }}
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-neutral-400 hover:text-white transition-colors duration-300"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-neutral-400 hover:text-white transition-colors duration-300 pointer-events-auto"
             aria-label="Scroll down"
             id="hero-scroll-indicator"
           >
-            <span className="text-[9px] font-sans font-bold tracking-[0.3em] uppercase">Scroll</span>
+            <span className="text-[9px] font-sans font-bold tracking-[0.3em] uppercase">
+              <EditableText contentKey="hero.scrollText" defaultText="Scroll" />
+            </span>
             <ChevronDown size={14} />
           </motion.button>
         </div>
@@ -314,6 +328,9 @@ export default function App() {
                       href="http://google.com/maps/place/Casa+Chitic+Hotels/@45.6417594,25.5897674,17z/data=!3m1!4b1!4m9!3m8!1s0x40b35b5c450e177d:0xe1d391e3599e83fd!5m2!4m1!1i2!8m2!3d45.6417594!4d25.5923423!16s%2Fg%2F11smdz24l6?entry=ttu&g_ep=EgoyMDI2MDcyMC4wIKXMDSoASAFQAw%3D%3D"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => {
+                        if (isLiveEditMode) e.preventDefault();
+                      }}
                       className="hover:text-[#A67C52] transition-colors"
                     >
                       <EditableText contentKey="welcome.factDesc" defaultText="Strada Nicolae Bălcescu 13" />
@@ -352,13 +369,17 @@ export default function App() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <span className="text-[10px] font-sans font-bold tracking-[0.35em] text-[#A67C52] uppercase block">
-                The Collections
+                <EditableText contentKey="rooms.subtitle" defaultText="The Collections" />
               </span>
               <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] font-medium tracking-tight">
-                Our Elegant Guest Rooms
+                <EditableText contentKey="rooms.title" defaultText="Our Elegant Guest Rooms" />
               </h2>
               <p className="text-xs text-neutral-500 font-sans max-w-md">
-                Select from our opulent Deluxe series or our highly comfortable, best-selling Budget collection.
+                <EditableText
+                  contentKey="rooms.description"
+                  defaultText="Select from our opulent Deluxe series or our highly comfortable, best-selling Budget collection."
+                  multiline
+                />
               </p>
             </div>
 
@@ -371,7 +392,7 @@ export default function App() {
                 }`}
                 id="filter-all-btn"
               >
-                All Rooms
+                <EditableText contentKey="rooms.filterAll" defaultText="All Rooms" />
               </button>
               <button
                 onClick={() => setRoomFilter('deluxe')}
@@ -380,7 +401,7 @@ export default function App() {
                 }`}
                 id="filter-deluxe-btn"
               >
-                Deluxe
+                <EditableText contentKey="rooms.filterDeluxe" defaultText="Deluxe" />
               </button>
               <button
                 onClick={() => setRoomFilter('budget')}
@@ -389,7 +410,7 @@ export default function App() {
                 }`}
                 id="filter-budget-btn"
               >
-                Budget
+                <EditableText contentKey="rooms.filterBudget" defaultText="Budget" />
               </button>
             </div>
           </div>
@@ -417,14 +438,18 @@ export default function App() {
           {/* Header */}
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[10px] font-sans font-bold tracking-[0.35em] text-[#A67C52] uppercase block">
-              Boutique Services
+              <EditableText contentKey="experiences.subtitle" defaultText="Boutique Services" />
             </span>
             <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] font-medium tracking-tight">
-              Curated Guest Experiences
+              <EditableText contentKey="experiences.title" defaultText="Curated Guest Experiences" />
             </h2>
             <div className="w-12 h-[1px] bg-[#A67C52] mx-auto mt-2" />
             <p className="text-xs text-neutral-500 font-sans">
-              Enjoy tailored amenities and historic hotel services designed to ensure your stay in Brașov is seamless and memorable.
+              <EditableText
+                contentKey="experiences.description"
+                defaultText="Enjoy tailored amenities and historic hotel services designed to ensure your stay in Brașov is seamless and memorable."
+                multiline
+              />
             </p>
           </div>
 
@@ -446,14 +471,18 @@ export default function App() {
           {/* Header */}
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[10px] font-sans font-bold tracking-[0.35em] text-[#A67C52] uppercase block">
-              Guest Feedback
+              <EditableText contentKey="reviews.subtitle" defaultText="Guest Feedback" />
             </span>
             <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] font-medium tracking-tight">
-              Explore Reviews
+              <EditableText contentKey="reviews.title" defaultText="Explore Reviews" />
             </h2>
             <div className="w-12 h-[1px] bg-[#A67C52] mx-auto mt-2" />
             <p className="text-xs text-neutral-500 font-sans">
-              Read true experiences from guests who have immersed themselves in the historic luxury of our old town boutique property.
+              <EditableText
+                contentKey="reviews.description"
+                defaultText="Read true experiences from guests who have immersed themselves in the historic luxury of our old town boutique property."
+                multiline
+              />
             </p>
           </div>
 

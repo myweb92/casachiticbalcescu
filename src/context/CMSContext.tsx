@@ -6,6 +6,7 @@ interface CMSContextType {
   getContent: (key: string, defaultValue: string) => string;
   updateContent: (key: string, value: string) => void;
   updateMultipleContent: (updates: Record<string, string>) => void;
+  resetContentKey: (key: string) => void;
   resetContent: () => void;
   isAdminLoggedIn: boolean;
   isLiveEditMode: boolean;
@@ -123,6 +124,19 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     });
   };
 
+  const resetContentKey = (key: string) => {
+    setContent(prev => {
+      const updated = { ...prev };
+      delete updated[key];
+      try {
+        localStorage.setItem(STORAGE_KEY_CONTENT, JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save CMS content', e);
+      }
+      return updated;
+    });
+  };
+
   const resetContent = () => {
     setContent({});
     localStorage.removeItem(STORAGE_KEY_CONTENT);
@@ -162,6 +176,7 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         getContent,
         updateContent,
         updateMultipleContent,
+        resetContentKey,
         resetContent,
         isAdminLoggedIn,
         isLiveEditMode,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Calendar, Users, Mail, Phone, User, Check, ShieldCheck, ArrowRight, Printer, MessageSquare } from 'lucide-react';
 import { Room, BookingInquiry } from '../types';
+import { useCMS } from '../context/CMSContext';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '' }: BookingModalProps) {
+  const { getContent } = useCMS();
   const [step, setStep] = useState(1);
   const [selectedRoomId, setSelectedRoomId] = useState(initialRoomId);
   const [checkIn, setCheckIn] = useState('');
@@ -162,7 +164,7 @@ export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '
                   >
                     {rooms.map((room) => (
                       <option key={room.id} value={room.id}>
-                        {room.name} ({room.type === 'deluxe' ? 'Deluxe' : 'Budget'}) 
+                        {getContent(`room.${room.id}.name`, room.name)} ({room.type === 'deluxe' ? 'Deluxe' : 'Budget'})
                       </option>
                     ))}
                   </select>
@@ -223,15 +225,18 @@ export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '
                   <div className="bg-[#EBE7E0]/50 rounded-none p-4 border border-[#DED9D2] flex flex-col sm:flex-row gap-4 items-center justify-between">
                     <div className="flex items-center gap-4 w-full sm:w-auto">
                       <img
-                        src={selectedRoomObj.images[0]}
-                        alt={selectedRoomObj.name}
+                        src={getContent(`room.${selectedRoomObj.id}.image.0`, selectedRoomObj.images[0])}
+                        alt={getContent(`room.${selectedRoomObj.id}.name`, selectedRoomObj.name)}
                         className="w-16 h-16 rounded-none object-cover bg-[#EBE7E0] border border-[#DED9D2] shrink-0"
                         referrerPolicy="no-referrer"
                       />
                       <div>
-                        <h4 className="text-sm font-semibold text-[#1A1A1A] font-serif">{selectedRoomObj.name}</h4>
+                        <h4 className="text-sm font-semibold text-[#1A1A1A] font-serif">
+                          {getContent(`room.${selectedRoomObj.id}.name`, selectedRoomObj.name)}
+                        </h4>
                         <p className="text-xs text-neutral-500 font-sans mt-0.5">
-                          {selectedRoomObj.bed} • {selectedRoomObj.size}
+                          {getContent(`room.${selectedRoomObj.id}.bed`, selectedRoomObj.bed)} •{' '}
+                          {getContent(`room.${selectedRoomObj.id}.size`, selectedRoomObj.size)}
                         </p>
                       </div>
                     </div>
@@ -330,7 +335,7 @@ export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '
                     
                   </div>
                   <p className="font-sans leading-relaxed">
-                    Room: {selectedRoomObj?.name} • Guests: {guests} {guests === 1 ? 'Adult' : 'Guests'} <br />
+                    Room: {selectedRoomObj ? getContent(`room.${selectedRoomObj.id}.name`, selectedRoomObj.name) : ''} • Guests: {guests} {guests === 1 ? 'Adult' : 'Guests'} <br />
                     Dates: {checkIn ? new Date(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Flexible'} to {checkOut ? new Date(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Flexible'}
                   </p>
                 </div>
@@ -404,7 +409,9 @@ export default function BookingModal({ isOpen, onClose, rooms, initialRoomId = '
                     </div>
                     <div className="flex justify-between">
                       <span className="text-neutral-500 uppercase font-sans tracking-wide text-[10px]">Room Selected:</span>
-                      <span className="font-semibold text-[#1A1A1A]">{selectedRoomObj?.name}</span>
+                      <span className="font-semibold text-[#1A1A1A]">
+                        {selectedRoomObj ? getContent(`room.${selectedRoomObj.id}.name`, selectedRoomObj.name) : ''}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-neutral-500 uppercase font-sans tracking-wide text-[10px]">Total Guests:</span>

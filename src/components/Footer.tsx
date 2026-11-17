@@ -7,7 +7,7 @@ import EditableText from './EditableText';
 import { useCMS } from '../context/CMSContext';
 
 export default function Footer() {
-  const { setIsAdminModalOpen } = useCMS();
+  const { setIsAdminModalOpen, isLiveEditMode } = useCMS();
   const [emailInquiry, setEmailInquiry] = useState('');
   const [messageText, setMessageText] = useState('');
   const [isSent, setIsSent] = useState(false);
@@ -58,7 +58,12 @@ export default function Footer() {
           {/* Column 1: Brand Info */}
           <div className="lg:col-span-4 space-y-5">
             <div className="flex items-center gap-3">
-              <Logo showText={false} variant="gold" className="w-10 h-11" />
+              <Logo
+                showText={false}
+                variant="gold"
+                compactImageEdit={true}
+                className="w-10 h-11 [&>div]:!w-10 [&>div]:!h-10 [&_img]:!w-full [&_img]:!h-full"
+              />
               <div className="flex flex-col text-left">
                 <span className="font-serif font-bold text-base text-white tracking-widest uppercase">
                   <EditableText contentKey="footer.brandName" defaultText="Casa Chitic" />
@@ -116,7 +121,7 @@ export default function Footer() {
           {/* Column 3: Contact details */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="font-serif text-sm font-semibold text-white tracking-wider uppercase">
-              Contact Us
+              <EditableText contentKey="footer.contactTitle" defaultText="Contact Us" />
             </h4>
             <ul className="space-y-3.5 text-xs font-sans">
               <li className="flex items-start gap-2.5">
@@ -147,7 +152,7 @@ export default function Footer() {
           {/* Column 4: Quick Contact Form */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="font-serif text-sm font-semibold text-white tracking-wider uppercase">
-              Questions?
+              <EditableText contentKey="footer.questionsTitle" defaultText="Questions?" />
             </h4>
             <form onSubmit={handleSubmitInquiry} className="space-y-2">
               <input
@@ -176,18 +181,21 @@ export default function Footer() {
               >
                 {isSent ? (
                   <>
-                    Sent! <Check size={12} />
+                    <EditableText contentKey="footer.sentBtnText" defaultText="Sent!" /> <Check size={12} />
                   </>
                 ) : (
                   <>
-                    Send Message <Send size={11} />
+                    <EditableText contentKey="footer.sendBtnText" defaultText="Send Message" /> <Send size={11} />
                   </>
                 )}
               </button>
             </form>
             {isSent && (
               <p className="text-[10px] text-emerald-500 font-sans mt-1">
-                Thank you! We will email you back shortly.
+                <EditableText
+                  contentKey="footer.sentMessage"
+                  defaultText="Thank you! We will email you back shortly."
+                />
               </p>
             )}
           </div>
@@ -201,25 +209,49 @@ export default function Footer() {
               className="text-[10px] text-neutral-500 font-sans cursor-pointer select-none hover:text-neutral-400 transition-colors"
               title="Click 3 times to access Admin Mode"
             >
-              Copyright &copy; 2026 Casa Chitic Bălcescu. All rights reserved.
+              <EditableText
+                contentKey="footer.copyright"
+                defaultText="Copyright © 2026 Casa Chitic Bălcescu. All rights reserved."
+              />
             </p>
             <p className="text-[10px] text-neutral-500 font-sans">
-              System developed by Niran Sudharaka
+              <EditableText
+                contentKey="footer.credit"
+                defaultText="System developed by Niran Sudharaka"
+              />
             </p>
           </div>
 
           {/* Terms & Privacy Links */}
           <div className="flex gap-4 text-[10px] font-sans text-neutral-500">
-            <button onClick={() => setIsTermsOpen(true)} className="hover:text-[#A67C52] transition-colors cursor-pointer">
-              Terms &amp; Conditions
+            <button
+              onClick={() => {
+                if (!isLiveEditMode) setIsTermsOpen(true);
+              }}
+              className="hover:text-[#A67C52] transition-colors cursor-pointer"
+            >
+              <EditableText contentKey="footer.termsLabel" defaultText="Terms & Conditions" />
             </button>
             <span>•</span>
-            <button onClick={() => setIsPrivacyOpen(true)} className="hover:text-[#A67C52] transition-colors cursor-pointer">
-              Privacy Policy
+            <button
+              onClick={() => {
+                if (!isLiveEditMode) setIsPrivacyOpen(true);
+              }}
+              className="hover:text-[#A67C52] transition-colors cursor-pointer"
+            >
+              <EditableText contentKey="footer.privacyLabel" defaultText="Privacy Policy" />
             </button>
             <span>•</span>
-            <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-[#A67C52] transition-colors">
-              ANPC
+            <a
+              href="https://anpc.ro/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
+              className="hover:text-[#A67C52] transition-colors"
+            >
+              <EditableText contentKey="footer.anpcLabel" defaultText="ANPC" />
             </a>
           </div>
         </div>

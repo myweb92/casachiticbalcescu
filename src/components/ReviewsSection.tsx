@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { Review } from '../types';
+import EditableText from './EditableText';
 
 export default function ReviewsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,28 +70,55 @@ export default function ReviewsSection() {
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={15} className="fill-current" />
                 ))}
-                <span className="ml-2 text-xs font-sans font-semibold text-neutral-800">5.0 / 5.0 Rating</span>
+                <span className="ml-2 text-xs font-sans font-semibold text-neutral-800">
+                  <EditableText contentKey="reviews.ratingLabel" defaultText="5.0 / 5.0 Rating" />
+                </span>
               </div>
               <span className="bg-[#EBE7E0] text-[#A67C52] border border-[#DED9D2] text-[9px] font-sans font-bold tracking-widest uppercase px-3 py-1">
-                Verified Stay
+                <EditableText contentKey="reviews.verifiedBadge" defaultText="Verified Stay" />
               </span>
             </div>
 
             {/* Testimonial Quote Content */}
             <p className="font-serif text-base md:text-lg text-[#1A1A1A] leading-relaxed italic">
-              "{activeReview.content}"
+              “
+              <EditableText
+                contentKey={`review.${activeReview.id}.content`}
+                defaultText={activeReview.content}
+                multiline
+              />
+              ”
             </p>
 
             {/* Author details */}
             <div className="flex items-center gap-4 pt-4 border-t border-[#DED9D2]">
               {/* Initials Avatar */}
               <div className="w-11 h-11 rounded-full bg-[#EBE7E0] border border-[#DED9D2] flex items-center justify-center font-serif text-base font-bold text-[#A67C52]">
-                {activeReview.avatarLetter}
+                <EditableText
+                  contentKey={`review.${activeReview.id}.avatar`}
+                  defaultText={activeReview.avatarLetter}
+                />
               </div>
               <div>
-                <h4 className="font-serif text-sm font-semibold text-[#1A1A1A]">{activeReview.author}</h4>
+                <h4 className="font-serif text-sm font-semibold text-[#1A1A1A]">
+                  <EditableText
+                    contentKey={`review.${activeReview.id}.author`}
+                    defaultText={activeReview.author}
+                  />
+                </h4>
                 <p className="text-xs text-neutral-600 font-sans mt-0.5">
-                  Stayed {activeReview.date} • via <span className="font-bold text-[#A67C52]">{activeReview.source}</span>
+                  Stayed{' '}
+                  <EditableText
+                    contentKey={`review.${activeReview.id}.date`}
+                    defaultText={activeReview.date}
+                  />{' '}
+                  • via{' '}
+                  <span className="font-bold text-[#A67C52]">
+                    <EditableText
+                      contentKey={`review.${activeReview.id}.source`}
+                      defaultText={activeReview.source}
+                    />
+                  </span>
                 </p>
               </div>
             </div>
@@ -141,7 +169,7 @@ export default function ReviewsSection() {
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#DED9D2] hover:bg-[#EBE7E0] transition-colors font-sans text-xs font-bold tracking-widest text-[#1A1A1A] uppercase w-full sm:w-auto"
         >
-          Google Reviews
+          <EditableText contentKey="reviews.googleBtnText" defaultText="Google Reviews" />
         </a>
       </div>
     </div>

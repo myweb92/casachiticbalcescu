@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Calendar, Phone } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Logo from './Logo';
+import EditableText from './EditableText';
+import { useCMS } from '../context/CMSContext';
 
 interface NavbarProps {
   onOpenBooking: () => void;
 }
 
 export default function Navbar({ onOpenBooking }: NavbarProps) {
+  const { isAdminLoggedIn, isLiveEditMode } = useCMS();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -51,6 +54,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    if (isLiveEditMode) return;
     setIsMobileMenuOpen(false);
     const targetId = href.replace('#', '');
     const targetElement = document.getElementById(targetId);
@@ -65,7 +69,9 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+          isAdminLoggedIn ? 'top-[42px]' : 'top-0'
+        } ${
           isScrolled
             ? 'bg-[#F5F2ED]/95 backdrop-blur-md shadow-sm py-3 border-b border-[#DED9D2]'
             : 'bg-gradient-to-b from-neutral-950/80 to-transparent py-5 text-white'
@@ -80,21 +86,26 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             className="flex items-center gap-3 group"
             id="nav-brand-logo"
           >
-            <Logo showText={false} variant={isScrolled ? 'gold' : 'white'} className="w-10 h-11 md:w-12 md:h-13 transition-transform group-hover:scale-105" />
+            <Logo
+              showText={false}
+              variant={isScrolled ? 'gold' : 'white'}
+              compactImageEdit={true}
+              className="w-10 h-11 md:w-12 md:h-13 transition-transform group-hover:scale-105 [&>div]:!w-10 [&>div]:!h-10 md:[&>div]:!w-12 md:[&>div]:!h-12 [&_img]:!w-full [&_img]:!h-full"
+            />
             <div className="flex flex-col">
               <span
                 className={`font-serif font-bold text-sm md:text-base tracking-widest uppercase transition-colors duration-300 ${
                   isScrolled ? 'text-[#1A1A1A]' : 'text-white'
                 }`}
               >
-                Casa Chitic
+                <EditableText contentKey="brand.name" defaultText="Casa Chitic" />
               </span>
               <span
                 className={`text-[8px] md:text-[9px] font-sans font-semibold tracking-[0.3em] uppercase -mt-0.5 transition-colors duration-300 ${
                   isScrolled ? 'text-[#A67C52]' : 'text-amber-100/90'
                 }`}
               >
-                Bălcescu • Brașov
+                <EditableText contentKey="brand.tagline" defaultText="Bălcescu • Brașov" />
               </span>
             </div>
           </a>
@@ -116,7 +127,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                     : 'text-neutral-200 hover:text-white'
                 }`}
               >
-                {link.name}
+                <EditableText contentKey={`nav.link.${link.id}`} defaultText={link.name} />
                 {/* Underline indicators */}
                 {isScrolled && (
                   <span
@@ -143,21 +154,28 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               </a>
               <a
                 href="tel:+40731002138"
+                onClick={(e) => {
+                  if (isLiveEditMode) e.preventDefault();
+                }}
                 className={`flex items-center gap-1.5 text-sm font-sans font-bold tracking-wider transition-colors duration-300 ${
                   isScrolled ? 'text-[#1A1A1A] hover:text-[#A67C52]' : 'text-neutral-200 hover:text-white'
                 }`}
-            >
-              <Phone size={15} className="text-[#A67C52]" /> +40 731 002 138
+              >
+                <Phone size={15} className="text-[#A67C52]" />
+                <EditableText contentKey="footer.phone" defaultText="+40 731 002 138" />
               </a>
             </div>
             <a
               href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
               className="bg-[#A67C52] hover:bg-[#8E6A46] text-white text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 transition-colors cursor-pointer inline-block"
               id="navbar-desktop-booking-btn"
             >
-              Book Now
+              <EditableText contentKey="nav.bookBtnText" defaultText="Book Now" />
             </a>
           </div>
 
@@ -165,21 +183,29 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           <div className="flex items-center gap-2 sm:gap-3 lg:hidden">
             <a
               href="tel:+40731002138"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
               className={`flex items-center gap-1 text-[9px] font-sans font-bold tracking-wider transition-colors duration-300 ${
                 isScrolled ? 'text-[#1A1A1A] hover:text-[#A67C52]' : 'text-neutral-200 hover:text-white'
               }`}
             >
               <Phone size={10} className="text-[#A67C52]" />
-              <span className="whitespace-nowrap">+40 731 002 138</span>
+              <span className="whitespace-nowrap">
+                <EditableText contentKey="footer.phone" defaultText="+40 731 002 138" />
+              </span>
             </a>
             <a
               href="https://hotels.cloudbeds.com/en/reservation/OYwpJm/?currency=ron"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => {
+                if (isLiveEditMode) e.preventDefault();
+              }}
               className="bg-[#A67C52] hover:bg-[#8E6A46] text-white text-[9px] font-sans font-bold uppercase tracking-widest px-2.5 sm:px-4 py-2 transition-colors cursor-pointer inline-block whitespace-nowrap"
               id="navbar-mobile-booking-btn"
             >
-              Book Now
+              <EditableText contentKey="nav.bookBtnText" defaultText="Book Now" />
             </a>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -217,18 +243,25 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                     activeSection === link.id ? 'text-[#A67C52]' : 'text-neutral-600 hover:text-[#A67C52]'
                   }`}
                 >
-                  {link.name}
+                  <EditableText contentKey={`nav.link.${link.id}`} defaultText={link.name} />
                 </a>
               ))}
             </nav>
 
             {/* Footer metrics in drawer */}
             <div className="flex flex-col items-center gap-3 text-center border-t border-[#DED9D2] pt-6">
-              <a href="tel:+40731002138" className="flex items-center gap-2 text-xs font-sans text-neutral-600 hover:text-neutral-800">
-                <Phone size={14} className="text-[#A67C52]" /> +40 731 002 138
+              <a
+                href="tel:+40731002138"
+                onClick={(e) => {
+                  if (isLiveEditMode) e.preventDefault();
+                }}
+                className="flex items-center gap-2 text-xs font-sans text-neutral-600 hover:text-neutral-800"
+              >
+                <Phone size={14} className="text-[#A67C52]" />
+                <EditableText contentKey="footer.phone" defaultText="+40 731 002 138" />
               </a>
               <p className="text-[9px] text-neutral-500 font-sans uppercase tracking-widest">
-                Nicolae Balcescu 13, Brasov, Romania
+                <EditableText contentKey="nav.mobileAddress" defaultText="Nicolae Balcescu 13, Brasov, Romania" />
               </p>
             </div>
           </motion.div>
