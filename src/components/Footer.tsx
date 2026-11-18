@@ -217,7 +217,7 @@ export default function Footer() {
             <p className="text-[10px] text-neutral-500 font-sans">
               <EditableText
                 contentKey="footer.credit"
-                defaultText="System developed by Niran Sudharaka"
+                defaultText="System developed by Niran Sudharaka."
               />
             </p>
           </div>
