@@ -57,12 +57,20 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   }, []);
 
-  // Check URL path or hash on mount and popstate for /padmin
+  // Check URL path, hash, or query on mount, popstate, and hashchange for /padmin
   useEffect(() => {
     const checkAdminRoute = () => {
-      const path = window.location.pathname.toLowerCase();
-      const hash = window.location.hash.toLowerCase();
-      if (path === '/padmin' || path.endsWith('/padmin') || hash === '#padmin') {
+      const path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+      const hash = window.location.hash.toLowerCase().replace(/\/+$/, '');
+      const search = new URLSearchParams(window.location.search);
+
+      if (
+        path === '/padmin' ||
+        path.endsWith('/padmin') ||
+        hash === '#padmin' ||
+        hash === '#/padmin' ||
+        search.has('padmin')
+      ) {
         const sessionHash = localStorage.getItem(STORAGE_KEY_SESSION);
         const activeHash = localStorage.getItem('casachitic_admin_hash') || DEFAULT_ADMIN_HASH;
         if (!sessionHash || sessionHash !== activeHash) {
@@ -76,13 +84,17 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     checkAdminRoute();
     window.addEventListener('popstate', checkAdminRoute);
-    return () => window.removeEventListener('popstate', checkAdminRoute);
+    window.addEventListener('hashchange', checkAdminRoute);
+    return () => {
+      window.removeEventListener('popstate', checkAdminRoute);
+      window.removeEventListener('hashchange', checkAdminRoute);
+    };
   }, []);
 
-  // Keyboard shortcut: Ctrl + Shift + L
+  // Keyboard shortcut: Cmd + Shift + L (Mac) or Ctrl + Shift + L (Windows/Linux)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key.toLowerCase() === 'l' || e.code === 'KeyL')) {
         e.preventDefault();
         if (isAdminLoggedIn) {
           setIsLiveEditMode(prev => !prev);
