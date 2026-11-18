@@ -5,6 +5,7 @@ import { useCMS } from '../context/CMSContext';
 export default function LiveAdminToolbar() {
   const {
     isAdminLoggedIn,
+    currentAdminUser,
     isLiveEditMode,
     setIsLiveEditMode,
     setIsAdminDrawerOpen,
@@ -26,7 +27,7 @@ export default function LiveAdminToolbar() {
         </div>
         <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
         <span className="hidden sm:inline-block text-[11px] text-neutral-400">
-          Admin Session Active
+          Signed in as <strong className="text-neutral-200">{currentAdminUser}</strong>
         </span>
       </div>
 

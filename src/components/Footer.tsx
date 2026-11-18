@@ -7,7 +7,7 @@ import EditableText from './EditableText';
 import { useCMS } from '../context/CMSContext';
 
 export default function Footer() {
-  const { setIsAdminModalOpen, isLiveEditMode } = useCMS();
+  const { openAdminModal, isLiveEditMode } = useCMS();
   const [emailInquiry, setEmailInquiry] = useState('');
   const [messageText, setMessageText] = useState('');
   const [isSent, setIsSent] = useState(false);
@@ -20,7 +20,7 @@ export default function Footer() {
     const nextCount = clickCount + 1;
     if (nextCount >= 3) {
       setClickCount(0);
-      setIsAdminModalOpen(true);
+      openAdminModal('footer');
     } else {
       setClickCount(nextCount);
       setTimeout(() => setClickCount(0), 2000);

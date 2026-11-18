@@ -32,3 +32,14 @@ export interface BookingInquiry {
   phone: string;
   notes?: string;
 }
+
+export type AdminAccessTrigger = 'cpanel' | 'shortcut' | 'footer' | 'portal';
+
+export interface AdminLoginLogEntry {
+  id: string;
+  timestamp: string;
+  username: string;
+  status: 'success' | 'failed' | 'logout';
+  trigger: AdminAccessTrigger;
+  device: string;
+}

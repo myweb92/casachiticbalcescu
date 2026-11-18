@@ -15,6 +15,11 @@ import {
   AlertCircle,
   FileCheck,
   BookOpen,
+  History,
+  Download,
+  CheckCircle2,
+  XCircle,
+  LogOut,
 } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
 import { verifyPassword } from '../utils/crypto';
@@ -28,9 +33,11 @@ export default function AdminDrawer() {
     resetContentKey,
     resetContent,
     changePassword,
+    loginLogs,
   } = useCMS();
 
-  const [activeTab, setActiveTab] = useState<'content' | 'terms' | 'privacy' | 'password'>('content');
+  const [activeTab, setActiveTab] = useState<'content' | 'terms' | 'privacy' | 'logs' | 'password'>('content');
+  const [logFilter, setLogFilter] = useState<'all' | 'success' | 'failed' | 'logout'>('all');
   const [searchFilter, setSearchFilter] = useState('');
 
   // Editing state for key-value CMS entries
@@ -150,6 +157,33 @@ export default function AdminDrawer() {
     }
   };
 
+  const handleExportLogsCsv = () => {
+    const header = ['Timestamp', 'Username', 'Status', 'Access Trigger', 'Device'];
+    const rows = loginLogs.map((entry) => [
+      entry.timestamp,
+      entry.username,
+      entry.status,
+      entry.trigger,
+      entry.device,
+    ]);
+    const csv = [header, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `casachitic-admin-login-logs-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const filteredLogs = loginLogs.filter((entry) =>
+    logFilter === 'all' ? true : entry.status === logFilter
+  );
+  const successLogCount = loginLogs.filter((l) => l.status === 'success').length;
+  const failedLogCount = loginLogs.filter((l) => l.status === 'failed').length;
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[9999] flex justify-end bg-black/60 backdrop-blur-sm font-sans">
@@ -210,6 +244,17 @@ export default function AdminDrawer() {
             >
               <FileCheck size={15} className="text-[#A67C52]" />
               <span>Privacy Policy</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('logs')}
+              className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
+                activeTab === 'logs'
+                  ? 'border-[#A67C52] text-white bg-neutral-800'
+                  : 'border-transparent text-neutral-400 hover:text-white'
+              }`}
+            >
+              <History size={15} className="text-[#A67C52]" />
+              <span>Login Logs ({loginLogs.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('password')}
@@ -412,7 +457,117 @@ export default function AdminDrawer() {
             </form>
           )}
 
-          {/* TAB 4: CHANGE PASSWORD */}
+          {/* TAB 4: LOGIN LOGS */}
+          {activeTab === 'logs' && (
+            <div className="flex-1 flex flex-col overflow-hidden bg-[#F9F8F6]">
+              {/* Stats & Actions Toolbar */}
+              <div className="p-4 border-b border-neutral-200 bg-white space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#1A1A1A]">Admin Access Audit Log</h3>
+                    <p className="text-[11px] text-neutral-500">
+                      Tracks successful logins, failed password/username attempts, and session sign-outs.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleExportLogsCsv}
+                      disabled={loginLogs.length === 0}
+                      className="px-3 py-1.5 border border-[#DED9D2] hover:bg-neutral-100 text-[#1A1A1A] text-xs font-bold uppercase tracking-wider rounded flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-40"
+                    >
+                      <Download size={13} className="text-[#A67C52]" /> Export CSV
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    {(['all', 'success', 'failed', 'logout'] as const).map((status) => (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => setLogFilter(status)}
+                        className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded transition-colors cursor-pointer ${
+                          logFilter === status
+                            ? 'bg-[#A67C52] text-white'
+                            : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px]">
+                    <span className="text-emerald-700 font-semibold">
+                      Success: {successLogCount}
+                    </span>
+                    <span className="text-red-700 font-semibold">
+                      Failed: {failedLogCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Log Entries */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
+                {filteredLogs.length === 0 ? (
+                  <div className="text-center py-16 text-neutral-500 space-y-2">
+                    <History size={34} className="mx-auto text-neutral-300" />
+                    <p className="text-xs">No login events recorded for this filter yet.</p>
+                  </div>
+                ) : (
+                  filteredLogs.map((entry) => (
+                    <div
+                      key={entry.id}
+                      className="p-3.5 bg-white border border-[#DED9D2] rounded shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 shrink-0">
+                          {entry.status === 'success' && (
+                            <CheckCircle2 size={17} className="text-emerald-600" />
+                          )}
+                          {entry.status === 'failed' && (
+                            <XCircle size={17} className="text-red-600" />
+                          )}
+                          {entry.status === 'logout' && (
+                            <LogOut size={16} className="text-neutral-500" />
+                          )}
+                        </div>
+                        <div className="space-y-0.5">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-xs font-bold text-[#1A1A1A] font-mono">
+                              {entry.username}
+                            </span>
+                            <span
+                              className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                                entry.status === 'success'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : entry.status === 'failed'
+                                  ? 'bg-red-50 text-red-700 border border-red-200'
+                                  : 'bg-neutral-100 text-neutral-600 border border-neutral-200'
+                              }`}
+                            >
+                              {entry.status}
+                            </span>
+                            <span className="text-[10px] text-[#A67C52] font-semibold uppercase tracking-wider">
+                              via /{entry.trigger}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-neutral-500">{entry.device}</p>
+                        </div>
+                      </div>
+                      <div className="text-[11px] text-neutral-500 font-mono sm:text-right shrink-0">
+                        {new Date(entry.timestamp).toLocaleString()}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: CHANGE PASSWORD */}
           {activeTab === 'password' && (
             <form onSubmit={handlePasswordSubmit} className="flex-1 p-6 overflow-y-auto bg-[#F9F8F6] space-y-6">
               <div>

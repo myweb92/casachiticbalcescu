@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Lock, KeyRound, X, ShieldCheck, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Lock, KeyRound, User, X, ShieldCheck, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
 
 export default function AdminLoginModal() {
   const { isAdminModalOpen, setIsAdminModalOpen, loginAdmin } = useCMS();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -14,16 +15,20 @@ export default function AdminLoginModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) return;
+    if (!username.trim() || !password) {
+      setError('Please enter both username and password.');
+      return;
+    }
 
     setLoading(true);
     setError('');
 
     try {
-      const success = await loginAdmin(password);
+      const success = await loginAdmin(username, password);
       if (!success) {
-        setError('Invalid administrator password. Access denied.');
+        setError('Invalid username or password. Access denied.');
       } else {
+        setUsername('');
         setPassword('');
       }
     } catch (err) {
@@ -35,6 +40,7 @@ export default function AdminLoginModal() {
   };
 
   const handleClose = () => {
+    setUsername('');
     setPassword('');
     setError('');
     setIsAdminModalOpen(false);
@@ -58,7 +64,7 @@ export default function AdminLoginModal() {
               <div>
                 <h3 className="font-serif text-xl font-bold text-white">Hotel Owner Access</h3>
                 <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-semibold">
-                  Live On-Page Edit Mode
+                  Control Panel Authentication
                 </p>
               </div>
             </div>
@@ -81,6 +87,24 @@ export default function AdminLoginModal() {
 
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
+                Username
+              </label>
+              <div className="relative">
+                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter username..."
+                  autoComplete="username"
+                  className="w-full pl-9 pr-4 py-2.5 bg-neutral-900 border border-neutral-700 focus:border-[#A67C52] focus:outline-none text-white text-sm rounded transition-colors"
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-neutral-300 uppercase tracking-wider block">
                 Admin Password
               </label>
               <div className="relative">
@@ -90,8 +114,8 @@ export default function AdminLoginModal() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter administrator password..."
+                  autoComplete="current-password"
                   className="w-full pl-9 pr-10 py-2.5 bg-neutral-900 border border-neutral-700 focus:border-[#A67C52] focus:outline-none text-white text-sm rounded transition-colors"
-                  autoFocus
                 />
                 <button
                   type="button"
@@ -118,7 +142,7 @@ export default function AdminLoginModal() {
                 className="w-2/3 py-2.5 bg-[#A67C52] hover:bg-[#8E6A46] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <ShieldCheck size={16} />
-                <span>{loading ? 'Verifying...' : 'Unlock Admin Portal'}</span>
+                <span>{loading ? 'Verifying...' : 'Unlock Control Panel'}</span>
               </button>
             </div>
           </form>
@@ -126,7 +150,7 @@ export default function AdminLoginModal() {
           {/* Security Note Footer */}
           <div className="p-3 bg-neutral-950 border-t border-neutral-900 text-center">
             <p className="text-[9px] text-neutral-500 font-sans tracking-wide">
-              🔒 Standard Security: Only salted SHA-256 cryptographic hashes are saved in session memory.
+              🔒 Salted SHA-256 authentication • All login attempts are logged.
             </p>
           </div>
         </motion.div>
