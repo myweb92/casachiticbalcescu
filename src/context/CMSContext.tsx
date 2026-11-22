@@ -130,7 +130,7 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   }, []);
 
-  // Check URL path, hash, or query on mount, popstate, and hashchange for /cpanel
+  // Check URL path, hash, or query on mount, popstate, and hashchange for /padmin
   useEffect(() => {
     const checkAdminRoute = () => {
       const path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
@@ -138,15 +138,15 @@ export const CMSProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const search = new URLSearchParams(window.location.search);
 
       if (
-        path === '/cpanel' ||
-        path.endsWith('/cpanel') ||
-        hash === '#cpanel' ||
-        hash === '#/cpanel' ||
-        search.has('cpanel')
+        path === '/padmin' ||
+        path.endsWith('/padmin') ||
+        hash === '#padmin' ||
+        hash === '#/padmin' ||
+        search.has('padmin')
       ) {
         const sessionHash = localStorage.getItem(STORAGE_KEY_SESSION);
         if (!isValidSessionHash(sessionHash)) {
-          setAdminTrigger('cpanel');
+          setAdminTrigger('padmin');
           setIsAdminModalOpen(true);
         } else {
           setIsAdminLoggedIn(true);

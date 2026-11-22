@@ -33,7 +33,7 @@ export interface BookingInquiry {
   notes?: string;
 }
 
-export type AdminAccessTrigger = 'cpanel' | 'shortcut' | 'footer' | 'portal';
+export type AdminAccessTrigger = 'padmin' | 'shortcut' | 'footer' | 'portal';
 
 export interface AdminLoginLogEntry {
   id: string;
