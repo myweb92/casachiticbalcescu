@@ -1,8 +1,6 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  # Route only /padmin to the SPA entry point so /cpanel, /whm, and /webmail redirect normally
+  RewriteRule ^padmin/?$ /index.html [L,NC]
 </IfModule>
